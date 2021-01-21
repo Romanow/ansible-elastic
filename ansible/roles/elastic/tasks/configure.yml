@@ -1,0 +1,28 @@
+---
+# file: roles/elastic/tasks/configure.yml
+- name: Configure ElasticSearch JVM options
+  become: yes
+  template:
+    src: jvm.options.j2
+    dest: "{{ config_dir }}/jvm.options.d/custom.options"
+    owner: "{{ elastic_user }}"
+    group: "{{ elastic_group }}"
+    mode: 0644
+  tags: configure
+
+- name: Configure ElasticSearch
+  become: yes
+  template:
+    src: elasticsearch.yml.j2
+    dest: "{{ config_dir }}/elasticsearch.yml"
+    owner: "{{ elastic_user }}"
+    group: "{{ elastic_group }}"
+    mode: 0644
+  tags: configure
+
+- name: Restart EasticSearch
+  become: yes
+  service:
+    name: elasticsearch
+    state: restarted
+  tags: configure

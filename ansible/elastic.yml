@@ -1,0 +1,5 @@
+---
+# file: elastic.yml
+- hosts: "all"
+  roles:
+    - elastic

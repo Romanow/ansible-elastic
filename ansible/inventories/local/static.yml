@@ -1,0 +1,16 @@
+---
+# file: inventories/local/group_vars/static.yml
+all:
+  hosts:
+    node1:
+      ansible_host: "192.168.55.10"
+    node2:
+      ansible_host: "192.168.55.11"
+    node3:
+      ansible_host: "192.168.55.12"
+  children:
+    elastic:
+      hosts:
+        node1:
+        node2:
+        node3:

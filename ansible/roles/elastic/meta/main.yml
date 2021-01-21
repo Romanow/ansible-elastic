@@ -1,0 +1,14 @@
+---
+# file: roles/elastic/meta/main.yml
+galaxy_info:
+  role_name: elastic
+  author: Romanov Alex <romanowalex@mail.ru>
+  license: EULA
+  platforms:
+    - name: Ubuntu
+      versions:
+        - 18.04
+allow_duplicates: false
+dependencies:
+  - basic
+  - firewall

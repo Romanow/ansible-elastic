@@ -1,0 +1,13 @@
+---
+node.name: {{ node_name }}
+
+path.logs: {{ log_dir }}
+path.data: {{ data_dir }}
+
+network.host: localhost,{{ bind_host }}
+http.port: {{ http_port }}
+transport.port: {{ transport_port }}
+
+node.roles: {{ node_roles }}
+
+discovery.seed_hosts: {{ discovery_hosts }}

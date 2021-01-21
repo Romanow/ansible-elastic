@@ -1,0 +1,20 @@
+---
+# file: roles/elastic/defaults/main.yml
+version: "7.10.2"
+elastic_user: root
+elastic_group: root
+
+config_dir: /etc/elasticsearch
+log_dir: /var/lib/elasticsearch
+data_dir: /var/log/elasticsearch
+bind_host: "{{ ansible_host }}"
+http_port: 9200
+transport_port: 9300
+
+node_name: "{{ inventory_hostname }}"
+cluster_name: es_cluster
+node_roles:
+  - master
+  - data
+
+java_memory: 1g

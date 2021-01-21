@@ -1,0 +1,9 @@
+---
+# file: inventories/group_vars/elastic/vars.yml
+firewall:
+  enabled: true
+  rules:
+    - { port: "9200", direction: "in", protocol: "tcp", policy: "allow", description: "ElasticSearch HTTP" }
+    - { port: "9300", direction: "in", protocol: "any", policy: "allow", description: "ElasticSearch Transport" }
+
+discovery_hosts: "{{ groups.elastic | reject('search', inventory_hostname) | map('extract', hostvars, 'ansible_host') | product([transport_port]) | map('join', ':') }}"
