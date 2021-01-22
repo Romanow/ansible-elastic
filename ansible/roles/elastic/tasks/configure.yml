@@ -7,7 +7,7 @@
     dest: "{{ config_dir }}/jvm.options.d/custom.options"
     owner: "{{ elastic_user }}"
     group: "{{ elastic_group }}"
-    mode: 0644
+    mode: 0640
   tags: configure
 
 - name: Configure ElasticSearch
@@ -17,7 +17,39 @@
     dest: "{{ config_dir }}/elasticsearch.yml"
     owner: "{{ elastic_user }}"
     group: "{{ elastic_group }}"
-    mode: 0644
+    mode: 0640
+  tags: configure
+
+- name: Configure roles
+  become: yes
+  copy:
+    content: "{{ roles | to_nice_yaml }}"
+    dest: "{{ config_dir }}/roles.yml"
+    owner: "{{ elastic_user }}"
+    group: "{{ elastic_group }}"
+    mode: 0640
+  tags: configure
+
+- name: Add users
+  become: yes
+  no_log: yes
+  shell: |-
+    ./elasticsearch-users useradd {{ item.name }} \
+    -p {{ item.password }} \
+    -r {{ item.roles | join(',') }} || true
+  args:
+    chdir: "{{ bin_dir }}"
+  with_items: "{{ users }}"
+  tags: configure
+
+- name: Create cert dir
+  become: yes
+  file:
+    dest: "{{ cert_dir }}"
+    state: directory
+    owner: "{{ elastic_user }}"
+    group: "{{ elastic_user }}"
+    mode: 0750
   tags: configure
 
 - name: Restart EasticSearch

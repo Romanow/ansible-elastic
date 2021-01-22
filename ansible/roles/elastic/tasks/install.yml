@@ -15,7 +15,7 @@
 - name: Install ElasticSearch
   become: yes
   apt:
-    name: "elasticsearch={{ elastic.version }}"
+    name: "elasticsearch={{ version }}"
     update_cache: yes
     state: present
 
