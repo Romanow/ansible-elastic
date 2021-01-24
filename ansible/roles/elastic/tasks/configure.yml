@@ -52,21 +52,23 @@
     mode: 0750
   tags: configure
 
-- block:
-    - name: Generate root certificate
-      shell: ./elasticsearch-certutil ca --pass "" --out /tmp/ca-{{ cluster_name }}.p12
+- name: Get Root certificate
+  become: yes
+  run_once: yes
+  block:
+    - name: Generate Root certificate
+      shell: ./elasticsearch-certutil ca --pass "" --out /tmp/ca-{{ cluster_name }}.p12 || true
       args:
         chdir: "{{ bin_dir }}"
         creates: "{{ home_dir }}/.cluster_cert_created"
-    - name: Copy certs from node
+    - name: Copy Root certificate from node
       fetch:
         src: "/tmp/ca-{{ cluster_name }}.p12"
         dest: /tmp/
         flat: yes
-  run_once: yes
   tags: configure
 
-- name: Copy root certs to nodes
+- name: Copy Root certificate to nodes
   become: yes
   copy:
     src: "/tmp/ca-{{ cluster_name }}.p12"
@@ -76,7 +78,7 @@
     mode: 0644
   tags: configure
 
-- name: Generate certs
+- name: Generate Node certificate
   become: yes
   shell: |-
     ./elasticsearch-certutil cert \
@@ -91,7 +93,7 @@
     creates: "{{ home_dir }}/.node_cert_created"
   tags: configure
 
-- name: Change cert permissions
+- name: Change certificate permissions
   become: yes
   file:
     dest: "{{ cert_dir }}/{{ node_name }}.p12"
@@ -101,7 +103,7 @@
     mode: 0640
   tags: configure
 
-- name: Delete root certs
+- name: Delete Root certificate
   become: yes
   file:
     dest: "/tmp/ca-{{ cluster_name }}.p12"
