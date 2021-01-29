@@ -6,9 +6,7 @@ firewall:
     - { port: "9200", direction: "in", protocol: "tcp", policy: "allow", description: "ElasticSearch HTTP" }
     - { port: "9300", direction: "in", protocol: "any", policy: "allow", description: "ElasticSearch Transport" }
 
-discovery_hosts: "{{ groups.elastic | map('extract', hostvars, 'ansible_host') | product([transport_port]) | map('join', ':') }}"
-
-roles:
+elastic_roles:
   admin:
     cluster:
       - all
@@ -17,7 +15,7 @@ roles:
         privileges:
           - all
 
-users:
+elastic_users:
   - name: admin
     password: "{{ vault_admin_passwd }}"
     roles:

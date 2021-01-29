@@ -1,9 +1,0 @@
----
-# file: roles/elastic/main.yml
-- name: Install ElasticSearch
-  include_tasks: install.yml
-  when: "'elasticsearch' not in ansible_facts.packages"
-
-- name: Configure ElasticSearch
-  include_tasks: configure.yml
-  tags: configure

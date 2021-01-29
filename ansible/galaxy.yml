@@ -1,0 +1,6 @@
+---
+# file: galaxy.yml
+roles:
+  - name: galaxy-elastic
+    src: https://github.com/Romanow/ansible-elastic-role
+    version: master

@@ -2,4 +2,6 @@
 # file: elastic.yml
 - hosts: "all"
   roles:
+    - basic
+    - firewall
     - elastic
